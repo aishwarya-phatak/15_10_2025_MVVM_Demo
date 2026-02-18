@@ -5,6 +5,6 @@
 //  Created by Vishal Jagtap on 16/02/26.
 //
 
-struct APIResponse{
+struct APIResponse : Decodable{
     var products : [Product]
 }
