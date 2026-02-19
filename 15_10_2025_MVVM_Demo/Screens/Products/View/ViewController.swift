@@ -18,6 +18,10 @@ class ViewController: UIViewController {
         observeEvent()
     }
     
+    func registerXIBWithTableView(){
+        
+    }
+    
     
     func initViewModel(){
         productViewModel.fetchProducts()
@@ -52,9 +56,9 @@ extension ViewController : UITableViewDelegate{
 extension ViewController : UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        <#code#>
+        self.productViewModel.products.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         <#code#>
     }

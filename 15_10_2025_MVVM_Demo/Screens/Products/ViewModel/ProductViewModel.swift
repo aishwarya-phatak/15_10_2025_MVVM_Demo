@@ -6,7 +6,6 @@
 //
 
 
-
 final class ProductViewModel{
     var products : [Product] = []
     var eventHandler : ((Event)->Void)?
