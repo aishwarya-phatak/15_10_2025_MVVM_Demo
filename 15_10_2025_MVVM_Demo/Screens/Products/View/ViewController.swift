@@ -6,20 +6,27 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var productsTableView: UITableView!
     let productViewModel = ProductViewModel()
+    let reuseIdentifierProductTableViewCell = "ProductTableViewCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerXIBWithTableView()
         initViewModel()
         observeEvent()
     }
     
     func registerXIBWithTableView(){
+        productsTableView.delegate = self
+        productsTableView.dataSource = self
         
+        let uiNib = UINib(nibName: "ProductTableViewCell", bundle: nil)
+        self.productsTableView.register(uiNib, forCellReuseIdentifier: reuseIdentifierProductTableViewCell)
     }
     
     
@@ -35,7 +42,7 @@ class ViewController: UIViewController {
                 case .dataLoaded:
                     print("Products Data Completely Loaded!")
                     DispatchQueue.main.async {
-                        <#code#>
+                        self?.productsTableView.reloadData()
                     }
                 case .stopLoading:
                     print("Products Data Stopped loading...")
@@ -44,14 +51,12 @@ class ViewController: UIViewController {
     }
 }
 
-
 extension ViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        <#code#>
+        return 132.0
     }
 }
-
 
 extension ViewController : UITableViewDataSource{
     
@@ -60,6 +65,15 @@ extension ViewController : UITableViewDataSource{
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        let productTableViewCell = self.productsTableView.dequeueReusableCell(withIdentifier: reuseIdentifierProductTableViewCell, for: indexPath) as! ProductTableViewCell
+        
+        productTableViewCell.productTitleLabel.text = self.productViewModel.products[indexPath.row].title
+        productTableViewCell.productDescriptionLabel.text = self.productViewModel.products[indexPath.row].description
+        productTableViewCell.productPriceLabel.text = "\(self.productViewModel.products[indexPath.row].price)"
+        
+        let urlOfImage = URL(string: self.productViewModel.products[indexPath.row].image)
+        productTableViewCell.productImageView.kf.setImage(with: urlOfImage,placeholder: UIImage(named: "test_image_2"))
+        
+        return productTableViewCell
     }
 }
